@@ -14,4 +14,4 @@ pip install torch transformers sentencepiece h5py
 pip install torch==1.9.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html  
 # Run TranP-B-site for prediction
 For prediction of binding site in a protein run following command:  
-``` python prediction.py -s  'EDRLKIDVIDWLVFDPAQRAE'  
+``` python prediction.py -s  'EDRLKIDVIDWLVFDPAQRAE' ```  

@@ -12,3 +12,6 @@ To run TranP-B-site
 Run following commands in the terminal  
 pip install torch transformers sentencepiece h5py  
 pip install torch==1.9.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html  
+# Run ProB-site for prediction
+For prediction of binding site in a protein run following command:  
+``` python predictor.py -p 3zeu -c D ```  

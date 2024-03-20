@@ -92,23 +92,16 @@ def embedding(input_seq):
     device = torch.device('cpu')
     
     def one_hot_encode(sequence):
-    # Define dictionary mapping amino acids to their indices
-    amino_acids = 'ACDEFGHIKLMNPQRSTVWY'
-    aa_to_index = {aa: i for i, aa in enumerate(amino_acids)}
+        amino_acids = 'ACDEFGHIKLMNPQRSTVWY'
+        aa_to_index = {aa: i for i, aa in enumerate(amino_acids)}
+            one_hot_sequence = []
     
-    # Initialize one-hot encoded sequence
-    one_hot_sequence = []
-    
-    # Iterate over each amino acid in the sequence
-    for aa in sequence:
-        # Initialize one-hot encoding vector for current amino acid
-        encoding = [0] * len(amino_acids)
-        # Set the index corresponding to the amino acid to 1
-        if find_alphabet(amino_acids, aa):
-            encoding[aa_to_index[aa]] = 1
-        # Append the one-hot encoding vector to the sequence
-        one_hot_sequence.append(encoding)
-    one_hot_sequence = np.array(one_hot_sequence)   
+        for aa in sequence:
+            encoding = [0] * len(amino_acids)
+            if find_alphabet(amino_acids, aa):
+                encoding[aa_to_index[aa]] = 1
+            one_hot_sequence.append(encoding)
+        one_hot_sequence = np.array(one_hot_sequence)   
     return one_hot_sequence
     
     def get_T5_model():

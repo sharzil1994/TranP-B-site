@@ -1,6 +1,7 @@
 # TranP-B-site
 # Intro
-TranP-B-site is a Transformer embedding based CNN model that predicts binding sites of protien protein interactions. It utilizes transformer embedding information extracted from protein sequences. 
+TranP-B-site is a Transformer embedding based CNN model that predicts binding sites of protien protein interactions. It utilizes transformer embedding information extracted from protein sequences.
+NVIDIA A100 80GB has been used for training and testing process.
 # System Requirment
 This model has been developed in Linux environment with:  
 ```

@@ -43,21 +43,15 @@ import time
 
 
 
-def predict(prot_test_31,prot_test_p_31):
+def predict(prot_test_r,prot_test_p_OHE):
     gpu=0
     
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
     os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu)
-    mix2=0
-    win_size=7
-    emb_type_no=0
-    folder_num=22
-    
-    f_name=f'{str(folder_num)}_{str(emb_type_no)}_{str(win_size)}__{str(mix2)}'
+
     new_model = tf.keras.models.load_model(f"model_7.h5")
 
-
-    pred_y = new_model.predict([prot_test_31,prot_test_p_31])
+    pred_y = new_model.predict([prot_test_r,prot_test_p_OHE])
     for i in range(len(pred_y)):
         if pred_y[i] < 0.5:
             pred_y[i] = 0;
@@ -96,6 +90,26 @@ def embedding(input_seq):
     # print("Using {}".format(device))
     
     device = torch.device('cpu')
+    
+    def one_hot_encode(sequence):
+    # Define dictionary mapping amino acids to their indices
+    amino_acids = 'ACDEFGHIKLMNPQRSTVWY'
+    aa_to_index = {aa: i for i, aa in enumerate(amino_acids)}
+    
+    # Initialize one-hot encoded sequence
+    one_hot_sequence = []
+    
+    # Iterate over each amino acid in the sequence
+    for aa in sequence:
+        # Initialize one-hot encoding vector for current amino acid
+        encoding = [0] * len(amino_acids)
+        # Set the index corresponding to the amino acid to 1
+        if find_alphabet(amino_acids, aa):
+            encoding[aa_to_index[aa]] = 1
+        # Append the one-hot encoding vector to the sequence
+        one_hot_sequence.append(encoding)
+    one_hot_sequence = np.array(one_hot_sequence)   
+    return one_hot_sequence
     
     def get_T5_model():
         model = T5EncoderModel.from_pretrained("Rostlab/prot_t5_xl_half_uniref50-enc")
@@ -153,27 +167,11 @@ def embedding(input_seq):
                     emb = embedding_repr.last_hidden_state[batch_idx,:s_len]
                     if per_residue: # store per-residue embeddings (Lx1024)
                         results["residue_embs"][ identifier ] = emb.detach().cpu().numpy().squeeze()
-                    if per_protein: # apply average-pooling to derive per-protein embeddings (1024-d)
-                        protein_emb = emb.mean(dim=0)
-                        results["protein_embs"][identifier] = protein_emb.detach().cpu().numpy().squeeze()
     
     
         passed_time=time.time()-start
         print(passed_time)
         print(len(results["residue_embs"]))
-        print(per_residue)
-        print(len(results["protein_embs"]))
-        
-        
-        
-        
-        avg_time = passed_time/len(results["residue_embs"]) if per_residue else passed_time/len(results["protein_embs"])
-        print('\n############# EMBEDDING STATS #############')
-        print('Total number of per-residue embeddings: {}'.format(len(results["residue_embs"])))
-        print('Total number of per-protein embeddings: {}'.format(len(results["protein_embs"])))
-        print("Time for generating embeddings: {:.1f}[m] ({:.3f}[s/protein])".format(
-            passed_time/60, avg_time ))
-        print('\n############# END #############')
         return results
     
     model, tokenizer = get_T5_model()
@@ -183,53 +181,37 @@ def embedding(input_seq):
     # test['test']='AQVQLVESGGGLVQAGGSLRLSCAVSGRPFSEYNLGWFRQAPGKEREFVARIRSSGTTVYTDSVKGRFSASRDNAKNMGYLQLNSLEPEDTAVYYCAMSRVDTDSPAFYDYWGQGTQVTVSTPR'
     input_seqence['input_seq']=input_seq
     # print(len(test['test']))
-    
+    per_residue = True 
     results=get_embeddings( model, tokenizer, input_seqence,
                          per_residue, per_protein, sec_struct)
     
     ppi_embd=dict()
-    ppi_embd_2=dict()
+
     for index1 in results['residue_embs'].keys():
         ppi_embd[index1]=results['residue_embs'][index1]
         
-    for index1 in results['residue_embs'].keys():
-        ppi_embd_2[index1]=results['protein_embs'][index1]  
-    
+    protein_onehot=dict()
 
-    win_size=7
-    
-    seqs3=ppi_embd
-    seqs6=ppi_embd_2
-    
-    
-    
-    seqs6=Protein_seq_feature(seqs3,seqs6)
-    
-    test_315_index=dict()
-    for index in seqs3.keys():
-        test_315_index[index]=0
-    
-    prot_d=seqs3
-    prot_d_p=seqs6
-    
+    for index in seq_all.keys():
+        temp=seq_all[index]
+        encoded_sequence = one_hot_encode(temp)
+        protein_onehot[index]=encoded_sequence
+
+    win_size=5
     
     prot_test_3d=dict()
-    prot_test_3d_p=dict()
-    
-    for index in prot_d.keys():
-        prot_test_3d[index]=prot_d[index]
-        prot_test_3d_p[index]=prot_d_p[index]
-    
-    
+    for index in ppi_embd.keys():
+        prot_test_3d[index]=ppi_embd[index]       
     prot_test_3=np.array(list(prot_test_3d.items()),dtype=object)[:,1]
-    
     prot_test_3=windowing(prot_test_3,win_size)
+
+    prot_test_OHE=dict()
+    for index in protein_onehot.keys():
+        prot_test_OHE[index]=protein_onehot[index]       
+    prot_test_OHE=np.array(list(prot_test_OHE.items()),dtype=object)[:,1]
+    prot_test_OHE=windowing(prot_test_OHE,win_size)
     
-    prot_test_p_3=np.array(list(prot_test_3d_p.items()),dtype=object)[:,1]
-    
-    prot_test_p_3=windowing(prot_test_p_3,1)
-    
-    return prot_test_3,prot_test_p_3
+    return prot_test_3,prot_test_OHE
   
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')

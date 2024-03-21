@@ -11,7 +11,7 @@ To run TranP-B-site
 Run following commands in the terminal  
 ```
 This model has been developed in Linux environment with: 
-* python 3.8.10
+* # python 3.8.10
 * numpy 1.21.5
 * pandas 1.4.2
 * tensor flow 2.3.0

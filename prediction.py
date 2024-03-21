@@ -11,7 +11,6 @@ import numpy as np
 import random
 from windowing import * 
 import sys,os
-
 import numpy as np
 
 from sklearn.model_selection import KFold
@@ -49,7 +48,7 @@ def predict(prot_test_r,prot_test_p_OHE):
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
     os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu)
 
-    new_model = tf.keras.models.load_model(f"model_7.h5")
+    new_model = tf.keras.models.load_model(f"model_5.h5")
 
     pred_y = new_model.predict([prot_test_r,prot_test_p_OHE])
     for i in range(len(pred_y)):
@@ -90,19 +89,27 @@ def embedding(input_seq):
     # print("Using {}".format(device))
     
     device = torch.device('cpu')
-    
+    def find_alphabet(string, alphabet):
+      return alphabet in string
     def one_hot_encode(sequence):
-        amino_acids = 'ACDEFGHIKLMNPQRSTVWY'
-        aa_to_index = {aa: i for i, aa in enumerate(amino_acids)}
-            one_hot_sequence = []
+    # Define dictionary mapping amino acids to their indices
+      amino_acids = 'ACDEFGHIKLMNPQRSTVWY'
+      aa_to_index = {aa: i for i, aa in enumerate(amino_acids)}
     
-        for aa in sequence:
-            encoding = [0] * len(amino_acids)
-            if find_alphabet(amino_acids, aa):
-                encoding[aa_to_index[aa]] = 1
-            one_hot_sequence.append(encoding)
-        one_hot_sequence = np.array(one_hot_sequence)   
-    return one_hot_sequence
+      # Initialize one-hot encoded sequence
+      one_hot_sequence = []
+      
+      # Iterate over each amino acid in the sequence
+      for aa in sequence:
+          # Initialize one-hot encoding vector for current amino acid
+          encoding = [0] * len(amino_acids)
+          # Set the index corresponding to the amino acid to 1
+          if find_alphabet(amino_acids, aa):
+              encoding[aa_to_index[aa]] = 1
+          # Append the one-hot encoding vector to the sequence
+          one_hot_sequence.append(encoding)
+      one_hot_sequence = np.array(one_hot_sequence)   
+      return one_hot_sequence
     
     def get_T5_model():
         model = T5EncoderModel.from_pretrained("Rostlab/prot_t5_xl_half_uniref50-enc")
@@ -185,8 +192,8 @@ def embedding(input_seq):
         
     protein_onehot=dict()
 
-    for index in seq_all.keys():
-        temp=seq_all[index]
+    for index in input_seqence.keys():
+        temp=input_seqence[index]
         encoded_sequence = one_hot_encode(temp)
         protein_onehot[index]=encoded_sequence
 
@@ -213,7 +220,6 @@ def blockPrint():
 def enablePrint():
     sys.stdout = sys.__stdout__
 
-  
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()

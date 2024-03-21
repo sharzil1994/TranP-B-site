@@ -48,7 +48,7 @@ def predict(prot_test_r,prot_test_p_OHE):
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
     os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu)
 
-    new_model = tf.keras.models.load_model(f"model_5.h5")
+    new_model = tf.keras.models.load_model(f"model_5.keras")
 
     pred_y = new_model.predict([prot_test_r,prot_test_p_OHE])
     for i in range(len(pred_y)):

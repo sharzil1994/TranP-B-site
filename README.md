@@ -28,5 +28,6 @@ https://colab.research.google.com/drive/1hJa3IytWhD_Vi8MSmb_ICeMwPKHCn7qy#scroll
 *feature extraction   
 https://colab.research.google.com/drive/1bAcL_z5nfeN8Eobv9RUbYDnQB6nBGWVR?usp=sharing   
 *training model   
-https://colab.research.google.com/drive/1d9ZDRnNogZ2uoUnSHm4KaQJ7VXZHWF6i?usp=sharing
-   
+https://colab.research.google.com/drive/1d9ZDRnNogZ2uoUnSHm4KaQJ7VXZHWF6i?usp=sharing   
+*pre-trained model   
+https://drive.google.com/file/d/1y2G1pXHMrwII0VcWKz47LHicWZpCXIu2/view?usp=drive_link

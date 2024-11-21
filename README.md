@@ -21,6 +21,6 @@ Run following commands in the terminal
 * # Run TranP-B-site for prediction
 For prediction of binding site in a protein run following command:  
   *``` python prediction.py -s  'EDRLKIDVIDWLVFDPAQRAE' ```  
-* # Run TranP-B-site for prediction
+* # Google Colab TranP-B-site for prediction
 Google Colab link  
 https://colab.research.google.com/drive/1hJa3IytWhD_Vi8MSmb_ICeMwPKHCn7qy#scrollTo=PRM2mkRFQd1M

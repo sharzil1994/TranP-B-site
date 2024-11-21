@@ -23,11 +23,11 @@ For prediction of binding site in a protein run following command:
   *``` python prediction.py -s  'EDRLKIDVIDWLVFDPAQRAE' ```  
 * # Google Colab TranP-B-site for prediction
 Google Colab link  
-
+'''
 complete code
  * https://colab.research.google.com/drive/1hJa3IytWhD_Vi8MSmb_ICeMwPKHCn7qy#scrollTo=PRM2mkRFQd1M
 feature extraction   
- * [Link Text](https://colab.research.google.com/drive/1bAcL_z5nfeN8Eobv9RUbYDnQB6nBGWVR?usp=sharing)   
+ * https://colab.research.google.com/drive/1bAcL_z5nfeN8Eobv9RUbYDnQB6nBGWVR?usp=sharing 
 training model   
- * [Link Text](https://colab.research.google.com/drive/1d9ZDRnNogZ2uoUnSHm4KaQJ7VXZHWF6i?usp=sharing)   
-
+ * https://colab.research.google.com/drive/1d9ZDRnNogZ2uoUnSHm4KaQJ7VXZHWF6i?usp=sharing 
+'''

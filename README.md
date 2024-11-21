@@ -16,18 +16,18 @@ This model has been developed in Linux environment with:
   * tensor flow 2.3.0
 Run following commands in the terminal 
   * pip install torch transformers sentencepiece h5py  
-  * pip install torch==1.9.0+cu111 -f [Link Text](https://download.pytorch.org/whl/torch_stable.html)
+  * pip install torch==1.9.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html
 ```  
 * # Run TranP-B-site for prediction
 For prediction of binding site in a protein run following command:  
   *``` python prediction.py -s  'EDRLKIDVIDWLVFDPAQRAE' ```  
 * # Google Colab TranP-B-site for prediction
 Google Colab link  
-```
+
 complete code
  * https://colab.research.google.com/drive/1hJa3IytWhD_Vi8MSmb_ICeMwPKHCn7qy#scrollTo=PRM2mkRFQd1M
 feature extraction
  * [Link Text](https://colab.research.google.com/drive/1bAcL_z5nfeN8Eobv9RUbYDnQB6nBGWVR?usp=sharing)
 training model
  * [Link Text](https://colab.research.google.com/drive/1d9ZDRnNogZ2uoUnSHm4KaQJ7VXZHWF6i?usp=sharing)
-```
+
